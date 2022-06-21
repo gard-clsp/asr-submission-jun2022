@@ -50,7 +50,7 @@
             "nb_epochs": 20000
         },
         "model_kwargs": {},
-        "module": "local.model.k2",
+        "module": "local.model.k2_icefall",
         "name": "get_art_model",
         "predict_kwargs": {
             "transcription_output": true
