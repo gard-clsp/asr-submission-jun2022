@@ -42,7 +42,6 @@
         "perturbation": "linf",
         "record_metric_per_sample": true,
         "task": [
-            "entailment",
             "word_error_rate"
         ]
     },
@@ -52,21 +51,21 @@
             "nb_epochs": 20000
         },
         "model_kwargs": {},
-        "module": "local.models.k2",
+        "module": "local.model.k2_icefall",
         "name": "get_art_model",
         "predict_kwargs": {
             "transcription_output": true
         },
         "weights_file": null,
         "wrapper_kwargs": {
-            "config_filepath": "JHUM_snowfall-conformer-noam-mmi-att-musan-sa-vgg-epoch20-avg5.yaml",
+            "config_filepath": "JHUM_icefall-conformer.yaml",
             "smooth_sigma": 0,
             "wave_gan_root_dir": "",
             "wave_gan_model_ckpt": "",
             "wave_gan_white": false,
-            "denoiser_root_dir": "JHUM_adv_denoiser",
-            "denoiser_model_ckpt": "11.pt",
-            "denoiser_white": true,
+            "denoiser_root_dir": "",
+            "denoiser_model_ckpt": "",
+            "denoiser_white": false,
             "device_type": "cuda"
         }
     },
@@ -76,7 +75,7 @@
         "name": "AutomaticSpeechRecognition"
     },
     "sysconfig": {
-        "docker_image": "yshao1995/armory-k2-snowfall:0.15.3",
+        "docker_image": "yshao1995/armory-k2-icefall:0.15.3",
             "external_github_repo": [
                 "YiwenShaoStephen/asr-submission-jun2022"
             ],
