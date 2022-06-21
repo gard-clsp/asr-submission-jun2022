@@ -42,6 +42,7 @@
         "perturbation": "linf",
         "record_metric_per_sample": true,
         "task": [
+            "entailment",
             "word_error_rate"
         ]
     },
