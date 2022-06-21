@@ -1,5 +1,5 @@
 {
-    "_description": "K2-snowfall ASR on LibriSpeech, contributed by JHU CLSP",
+    "_description": "K2-icefall ASR on LibriSpeech, contributed by JHU CLSP",
     "adhoc": {
         "skip_adversarial": false
     },
