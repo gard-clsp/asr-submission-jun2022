@@ -6,6 +6,7 @@
 """
 This module implements the task specific estimator k2
 """
+import os
 import logging
 from typing import List, Optional, TYPE_CHECKING, Union
 
@@ -21,6 +22,9 @@ from .wave_gan_white import WaveGANDefender as WaveGANDefenderWhite
 
 from .denoiser import DenoiserDefender
 from .denoiser_white import DenoiserDefender as DenoiserDefenderWhite
+
+from armory import paths
+from armory.data.utils import maybe_download_weights_from_s3
 
 if TYPE_CHECKING:
     import torch
@@ -51,7 +55,6 @@ class PyTorchK2(SpeechRecognizerMixin, PyTorchEstimator):
             denoiser_defender: Optional[Union[DenoiserDefender, DenoiserDefenderWhite]] = None,
             smooth_sigma: float = 0,
             defense_chunk_size: int = -1,
-            attack_chunk_size: int = -1,
             random_split_chunk: bool = False,
     ):
         import os
@@ -82,7 +85,6 @@ class PyTorchK2(SpeechRecognizerMixin, PyTorchEstimator):
         self.denoiser_defender = denoiser_defender
         self.smoothing_after_wavegan = smoothing_after_wavegan
         self.defense_chunk_size = defense_chunk_size
-        self.attack_chunk_size = attack_chunk_size
         self.random_split_chunk = random_split_chunk
 
         # Check clip values
@@ -115,10 +117,20 @@ class PyTorchK2(SpeechRecognizerMixin, PyTorchEstimator):
         # self._optimizer = optimizer
         # self._use_amp = use_amp
 
+        maybe_download_k2_configs()
+        config_filepath, saved_model_dir = self.find_filepath(config_filepath)
+
         # construct args
         with open(config_filepath) as file:
-            k2_config = yaml.load(file, Loader=yaml.FullLoader)          
+            k2_config = yaml.load(file, Loader=yaml.FullLoader)
         self.k2_config = k2_config
+
+        self.prepare_model_files(saved_model_dir)
+        
+        # # construct args
+        # with open(config_filepath) as file:
+        #     k2_config = yaml.load(file, Loader=yaml.FullLoader)          
+        # self.k2_config = k2_config
 
         self.lexicon = Lexicon(self.k2_config["lang_dir"])
         self.max_token_id = max(self.lexicon.tokens)
@@ -173,6 +185,28 @@ class PyTorchK2(SpeechRecognizerMixin, PyTorchEstimator):
         # self.HLG = self.HLG.to(self._device)
         # self.HLG.aux_labels = k2.ragged.remove_values_eq(self.HLG.aux_labels, 0)
         # self.HLG.requires_grad_(False)
+
+    @staticmethod
+    def find_filepath(filepath):
+        saved_model_dir = None
+        # try absolute path
+        if not os.path.exists(filepath):
+            filepath_0 = filepath
+            # try with docker
+            paths.set_mode('docker')
+            saved_model_dir = paths.runtime_paths().saved_model_dir
+            filepath = os.path.join(saved_model_dir, filepath_0)
+            if not os.path.exists(filepath):
+                filepath_1 = filepath
+                # try hostmode path
+                paths.set_mode('host')
+                saved_model_dir = paths.runtime_paths().saved_model_dir
+                filepath = os.path.join(saved_model_dir, filepath_0)
+                if not os.path.exists(filepath):
+                    raise FileNotFoundError('file not found in %s / %s / %s' %
+                                            (filepath_0, filepath_1, filepath))
+
+        return filepath, saved_model_dir
 
     def predict(self, x, batch_size=128, transcription_output: bool = True, **kwargs):
         """
@@ -423,7 +457,7 @@ class PyTorchK2(SpeechRecognizerMixin, PyTorchEstimator):
         nnet_output, encoder_memory, memory_mask = self._model(
             feature,
             supervisions,
-            chunk_size=self.attack_chunk_size,
+            chunk_size=-1,
             dynamic_chunk_training=False)
         # nnet_output is (N, T, C)
 
@@ -712,6 +746,35 @@ class PyTorchK2(SpeechRecognizerMixin, PyTorchEstimator):
     def set_learning_phase(self, train: bool) -> None:
         raise NotImplementedError
 
+    def prepare_model_files(self, saved_model_dir):
+        """Resolves the absoute path to the model files 
+           and decompress the models if necessary
+        """
+        if saved_model_dir is None:
+            return
+
+        self.k2_config['lang_dir'] = os.path.join(saved_model_dir,
+                                                  self.k2_config['lang_dir'])
+        # self.k2_config['HLG'] = os.path.join(saved_model_dir,
+        #                                      self.k2_config['HLG'])
+        self.k2_config["checkpoint"]["dir"] = os.path.join(
+            saved_model_dir, self.k2_config["checkpoint"]["dir"])
+
+        import tarfile
+        if not os.path.isdir(self.k2_config['lang_dir']):
+            tar_file = self.k2_config['lang_dir'] + '.tar.gz'
+            maybe_download_weights_from_s3(tar_file)
+            f = tarfile.open(tar_file)
+            f.extractall(saved_model_dir)
+            f.close()
+
+        if not os.path.isdir(self.k2_config['checkpoint']['dir']):
+            tar_file = self.k2_config['checkpoint']['dir'] + '.tar.gz'
+            maybe_download_weights_from_s3(tar_file)
+            f = tarfile.open(tar_file)
+            f.extractall(saved_model_dir)
+            f.close()
+
 
 def get_art_model(model_kwargs, wrapper_kwargs, weights_path=None):
     # Added to avoid CUDA error on GRID , Sonal 06Nov20
@@ -751,6 +814,8 @@ def get_art_model(model_kwargs, wrapper_kwargs, weights_path=None):
     whitebox_denoiser = bool(wrapper_kwargs['denoiser_white'])
     denoiser_defender = None
     if use_denoiser:
+        wrapper_kwargs['denoiser_root_dir'] = maybe_download_denoiser(wrapper_kwargs['denoiser_root_dir'])
+        print(wrapper_kwargs['denoiser_root_dir'])
         if whitebox_denoiser:
             denoiser_defender = DenoiserDefenderWhite(
                 Path(wrapper_kwargs['denoiser_root_dir']), 
@@ -772,3 +837,41 @@ def get_art_model(model_kwargs, wrapper_kwargs, weights_path=None):
 
     
     return PyTorchK2(wave_gan_defender=wave_gan_defender, denoiser_defender=denoiser_defender,**wrapper_kwargs)
+
+
+def maybe_download_denoiser(root_dir):
+    if os.path.exists(root_dir):
+        return root_dir
+
+    tar_file = root_dir + '.tar.gz'
+    maybe_download_weights_from_s3(tar_file)
+
+    saved_model_dir = paths.runtime_paths().saved_model_dir
+    root_dir = os.path.join(saved_model_dir, root_dir)
+    if os.path.isdir(root_dir):
+        return root_dir
+    
+    tar_file = os.path.join(saved_model_dir, tar_file)
+    if not os.path.exists(tar_file):
+        raise FileNotFoundError('file not found in %s ' % filepath)
+
+    import tarfile
+    f = tarfile.open(tar_file)
+    f.extractall(saved_model_dir)
+    f.close()
+
+    return root_dir
+
+def maybe_download_wavegan():
+    for f in [
+            'JHUM_wavegan_libri_t1.4_config.yml',
+            'JHUM_wavegan_libri_t1.4_stats.h5', 'JHUM_wavegan_libri_t1.4.pkl'
+    ]:
+        maybe_download_weights_from_s3(f)
+        
+
+def maybe_download_k2_configs():
+    for f in [
+            'JHUM_icefall-conformer.yaml'
+    ]:
+        maybe_download_weights_from_s3(f)

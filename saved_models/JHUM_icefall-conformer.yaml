@@ -1,4 +1,4 @@
-lang_dir: /export/b06/yshao/icefall/egs/librispeech/ASR/streaming_conformer/streaming_models/lang_bpe
+lang_dir: JHUM_k2_icefall_lang_bpe
 num_features: 80
 sampling_rate: 16000
 subsampling_factor: 4
@@ -11,5 +11,5 @@ model:
     causal: true
 checkpoint:
     dir: JHUM_icefall-conformer
-    model_name: JHUM_trained_streaming_conformer.pt
+    model_name: trained_streaming_conformer.pt
 

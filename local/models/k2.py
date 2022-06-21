@@ -54,7 +54,7 @@ class PyTorchK2(SpeechRecognizerMixin, PyTorchEstimator):
             wave_gan_defender: Optional[Union[WaveGANDefender, WaveGANDefenderWhite]] = None,
             denoiser_defender: Optional[Union[DenoiserDefender, DenoiserDefenderWhite]] = None,
             smooth_sigma: float = 0,
-            defense_chunk_size: int = 0,
+            defense_chunk_size: int = -1,
             random_split_chunk: bool = False,
     ):
         import os
@@ -262,8 +262,6 @@ class PyTorchK2(SpeechRecognizerMixin, PyTorchEstimator):
                 chunk_supervisions, n_chunks = self.split_chunks(supervisions,
                                                                  self.defense_chunk_size,
                                                                  self.defense_chunk_size)
-            print('n_chunks: {}'.format(n_chunks))
-            print(chunk_supervisions)
             with torch.no_grad():
                 feature = feature.to(self._device)
                 chunk_outputs = []
@@ -782,8 +780,6 @@ def maybe_download_wavegan():
 
 def maybe_download_k2_configs():
     for f in [
-            'JHUM_k2_conformer-mmi-att-sa-vgg-normlayer-rs0.3sched-epoch19-avg10.yaml',
-            'JHUM_k2_conformer-noam-mmi-att-musan-sa-vgg-adv-pgd-4-iterU1-10_epsU0.0001-0.02-epoch27.yaml',
-            'JHUM_k2_conformer-noam-mmi-att-musan-sa-vgg-epoch20-avg5.yaml'
+            'JHUM_snowfall-conformer-noam-mmi-att-musan-sa-vgg-epoch20-avg5.yaml'
     ]:
         maybe_download_weights_from_s3(f)
