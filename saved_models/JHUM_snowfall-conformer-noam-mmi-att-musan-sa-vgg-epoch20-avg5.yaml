@@ -1,0 +1,16 @@
+lang_dir: /export/b06/yshao/snowfall/egs/librispeech/asr/simple_v1/data/lang_nosp
+HLG: /export/b06/yshao/snowfall/egs/librispeech/asr/simple_v1/data/lang_nosp/HLG.pt
+num_features: 80
+sampling_rate: 16000
+subsampling_factor: 4
+den_scale: 1.0
+model:
+    nhead: 4
+    attention_dim: 256
+    num_decoder_layers: 0
+    vgg_frontend: true
+checkpoint:
+    dir: /export/c23/pzelasko/exp-conformer-noam-mmi-att-musan-sa-vgg
+    avg: 5
+    epoch: 21
+
