@@ -8,7 +8,7 @@
         "kwargs": {
             "batch_size": 1,
             "eps": 20,
-            "eps_step": 0.05,
+            "eps_step": 0.5,
             "max_iter": 500,
             "norm": "snr",
             "num_random_init": 0,
@@ -19,12 +19,11 @@
         "targeted": true,
         "targeted_labels": {
             "kwargs": {
-                "dtype": "str",
                 "import_from": "armory.attacks.librispeech_target_labels",
-                "values": "entailment_100"
+                "transcripts": "matched_length"
             },
             "module": "armory.utils.labels",
-            "name": "ManualTargeter"
+            "name": "MatchedTranscriptLengthTargeter"
         },
         "use_label": false
     },
@@ -42,7 +41,6 @@
         "perturbation": "linf",
         "record_metric_per_sample": true,
         "task": [
-            "entailment",
             "word_error_rate"
         ]
     },
@@ -64,9 +62,9 @@
             "wave_gan_root_dir": "",
             "wave_gan_model_ckpt": "",
             "wave_gan_white": false,
-            "denoiser_root_dir": "",
-            "denoiser_model_ckpt": "",
-            "denoiser_white": false,
+            "denoiser_root_dir": "JHUM_adv_denoiser",
+            "denoiser_model_ckpt": "11.pt",
+            "denoiser_white": true,
             "defense_chunk_size": -1,
             "random_split_chunk": false,
             "device_type": "cuda"
