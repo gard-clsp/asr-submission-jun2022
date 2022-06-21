@@ -65,6 +65,8 @@
             "denoiser_root_dir": "",
             "denoiser_model_ckpt": "",
             "denoiser_white": false,
+            "defense_chunk_size": 0,
+            "random_split_chunk": false,
             "device_type": "cuda"
         }
     },
