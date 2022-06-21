@@ -10,6 +10,6 @@ model:
     use_feat_batchnorm: true
     causal: true
 checkpoint:
-    dir: /export/b06/yshao/icefall/egs/librispeech/ASR/streaming_conformer/streaming_models
-    model_name: /export/b06/yshao/icefall/egs/librispeech/ASR/streaming_conformer/streaming_models/trained_streaming_conformer.pt
+    dir: JHUM_icefall-conformer
+    model_name: JHUM_trained_streaming_conformer.pt
 

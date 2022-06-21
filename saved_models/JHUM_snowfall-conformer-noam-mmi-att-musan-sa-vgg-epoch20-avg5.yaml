@@ -10,7 +10,6 @@ model:
     num_decoder_layers: 0
     vgg_frontend: true
 checkpoint:
-    dir: /export/c23/pzelasko/exp-conformer-noam-mmi-att-musan-sa-vgg
+    dir: JHUM_snowfall-conformer-noam-mmi-att-musan-sa-vgg-epoch20-avg5
     avg: 5
     epoch: 21
-
