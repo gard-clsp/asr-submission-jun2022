@@ -52,7 +52,7 @@
     "sysconfig": {
 	"docker_image": "yshao1995/armory-k2-snowfall:0.15.3",
         "external_github_repo": [
-            "gard-clsp/asr-submission-june2022"
+            "YiwenShaoStephen/asr-submission-jun2022"
         ],
         "gpus": "all",
         "local_repo_path": null,
