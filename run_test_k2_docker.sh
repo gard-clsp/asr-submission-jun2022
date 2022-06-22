@@ -4,7 +4,7 @@ ngpu=0
 ncpu=1
 CONDA_ROOT=/Users/villalba/usr/local/anaconda3
 . $CONDA_ROOT/etc/profile.d/conda.sh
-conda activate armory_jun22
+conda activate armory-eval-5
 
 if [ $ngpu -eq 0 ];then
     export CUDA_VISIBLE_DEVICES=""
