@@ -18,7 +18,7 @@ $  export ARMORY_GITHUB_TOKEN=...
 ### Installing armory
 
 ```bash
-$ pip install armory-testbed==0.14.2
+$ pip install armory-testbed==0.15.3
 ```
 
 ### Obtaining models

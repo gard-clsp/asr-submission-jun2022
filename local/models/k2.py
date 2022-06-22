@@ -782,8 +782,6 @@ def maybe_download_wavegan():
 
 def maybe_download_k2_configs():
     for f in [
-            'JHUM_k2_conformer-mmi-att-sa-vgg-normlayer-rs0.3sched-epoch19-avg10.yaml',
-            'JHUM_k2_conformer-noam-mmi-att-musan-sa-vgg-adv-pgd-4-iterU1-10_epsU0.0001-0.02-epoch27.yaml',
-            'JHUM_k2_conformer-noam-mmi-att-musan-sa-vgg-epoch20-avg5.yaml'
+            'JHUM_k2_snowfall_conformer-noam-mmi-att-musan-sa-vgg-epoch20-avg5.yaml'
     ]:
         maybe_download_weights_from_s3(f)

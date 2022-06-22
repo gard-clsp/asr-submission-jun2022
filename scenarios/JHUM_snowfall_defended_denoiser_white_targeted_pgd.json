@@ -57,7 +57,7 @@
         },
         "weights_file": null,
         "wrapper_kwargs": {
-            "config_filepath": "JHUM_snowfall-conformer-noam-mmi-att-musan-sa-vgg-epoch20-avg5.yaml",
+            "config_filepath": "JHUM_k2_snowfall-conformer-noam-mmi-att-musan-sa-vgg-epoch20-avg5.yaml",
             "smooth_sigma": 0,
             "wave_gan_root_dir": "",
             "wave_gan_model_ckpt": "",
@@ -84,6 +84,6 @@
         "local_repo_path": null,
         "output_dir": null,
         "output_filename": null,
-        "use_gpu": false
+        "use_gpu": true
     }
 }
