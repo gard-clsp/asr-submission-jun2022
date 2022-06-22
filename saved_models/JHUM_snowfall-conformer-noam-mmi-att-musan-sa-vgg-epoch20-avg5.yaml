@@ -1,5 +1,5 @@
-lang_dir: /export/b06/yshao/snowfall/egs/librispeech/asr/simple_v1/data/lang_nosp
-HLG: /export/b06/yshao/snowfall/egs/librispeech/asr/simple_v1/data/lang_nosp/HLG.pt
+lang_dir: JHUM_k2_lang_nosp
+HLG: JHUM_k2_lang_nosp/HLG.pt
 num_features: 80
 sampling_rate: 16000
 subsampling_factor: 4
@@ -10,6 +10,7 @@ model:
     num_decoder_layers: 0
     vgg_frontend: true
 checkpoint:
-    dir: JHUM_snowfall-conformer-noam-mmi-att-musan-sa-vgg-epoch20-avg5
+    dir: JHUM_k2_conformer-noam-mmi-att-musan-sa-vgg
     avg: 5
     epoch: 21
+
