@@ -780,7 +780,10 @@ def get_art_model(model_kwargs, wrapper_kwargs, weights_path=None):
     # Added to avoid CUDA error on GRID , Sonal 06Nov20
     if torch.cuda.is_available():
         ttmp = torch.zeros([1, 1]).to(torch.device("cuda"))
-
+        wrapper_kwargs['device_type'] = 'cuda'
+    else:
+        wrapper_kwargs['device_type'] = 'cpu'
+        
     # WaveGAN calls
     for key in ('wave_gan_root_dir', 'wave_gan_model_ckpt', 'wave_gan_white'):
         logging.info(f'WaveGAN parameter "{key}": {wrapper_kwargs[key]}')
