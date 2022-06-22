@@ -34,7 +34,7 @@ JHUM_adv_denoiser.tar.gz
 JHUM_k2_conformer-noam-mmi-att-musan-sa-vgg.tar.gz
 JHUM_icefall-conformer.tar.gz
 JHUM_k2_icefall_lang_bpe.tar.gz
-JHUM_k2_lang_nosp
+JHUM_k2_lang_nosp.tar.gz
 JHUM_icefall-conformer.yaml
 JHUM_snowfall-conformer-noam-mmi-att-musan-sa-vgg-epoch20-avg5.yaml
 ```
