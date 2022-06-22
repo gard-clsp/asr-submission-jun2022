@@ -52,7 +52,7 @@
             "nb_epochs": 20000
         },
         "model_kwargs": {},
-        "module": "local.model.k2_icefall",
+        "module": "local.models.k2_icefall",
         "name": "get_art_model",
         "predict_kwargs": {
             "transcription_output": true
@@ -65,10 +65,10 @@
             "wave_gan_model_ckpt": "",
             "wave_gan_white": false,
             "denoiser_root_dir": "JHUM_adv_denoiser",
-            "denoiser_model_ckpt": "11.pt",
+            "denoiser_model_ckpt": "epoch-11.pt",
             "denoiser_white": true,
-            "defense_chunk_size": -1,
-            "random_split_chunk": true,
+            "defense_chunk_size": 600,
+            "random_split_chunk": false,
             "device_type": "cuda"
         }
     },

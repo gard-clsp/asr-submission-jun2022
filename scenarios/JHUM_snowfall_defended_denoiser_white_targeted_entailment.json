@@ -65,7 +65,7 @@
             "wave_gan_model_ckpt": "",
             "wave_gan_white": false,
             "denoiser_root_dir": "JHUM_adv_denoiser",
-            "denoiser_model_ckpt": "11.pt",
+            "denoiser_model_ckpt": "epoch-11.pt",
             "denoiser_white": true,
             "defense_chunk_size": 0,
             "random_split_chunk": false,

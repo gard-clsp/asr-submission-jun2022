@@ -103,6 +103,7 @@ FROM armory-k2-base as armory-k2-snowfall
 ARG armory_version
 
 RUN /opt/conda/bin/pip install armory-testbed==${armory_version} --no-cache-dir
+RUN /opt/conda/bin/pip install transformers
 
 WORKDIR /workspace
 CMD tail -f /dev/null
