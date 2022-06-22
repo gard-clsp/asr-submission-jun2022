@@ -55,10 +55,10 @@ armory run --check $extra_args scenarios/JHUM_icefall_defended_denoiser_white_ta
 
 echo "***************************************************************"
 echo "***************************************************************"
-echo "run k2 icefall denoiser targeted pgd"
+echo "run k2 icefall denoiser+chunk targeted pgd"
 armory run --check $extra_args scenarios/JHUM_icefall_defended_denoiser_chunking_white_targeted_pgd.json
 
 echo "***************************************************************"
-echo "run k2 icefall denoiser entailment"
+echo "run k2 icefall denoiser+chunk entailment"
 armory run --check $extra_args scenarios/JHUM_icefall_defended_denoiser_chunking_white_targeted_entailment.json
 
