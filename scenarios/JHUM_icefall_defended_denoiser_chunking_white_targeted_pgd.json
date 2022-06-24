@@ -65,7 +65,7 @@
             "denoiser_root_dir": "JHUM_adv_denoiser",
             "denoiser_model_ckpt": "epoch-11.pt",
             "denoiser_white": true,
-            "defense_chunk_size": -1,
+            "defense_chunk_size": 600,
             "random_split_chunk": true,
             "device_type": "cuda"
         }
