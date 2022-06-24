@@ -10,7 +10,7 @@ model:
     num_decoder_layers: 0
     vgg_frontend: true
 checkpoint:
-    dir: JHUM_k2_conformer-noam-mmi-att-musan-sa-vgg
+    dir: JHUM_snowfall-conformer-noam-mmi-att-musan-sa-vgg
     avg: 5
     epoch: 21
 
